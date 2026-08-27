@@ -7,29 +7,20 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: استنساخ المستودع
         uses: actions/checkout@v4
 
-      - name: تثبيت Python
-        uses: actions/setup-python@v5
+      - name: بناء APK عبر Buildozer Action
+        uses: ArtemSBulgakov/buildozer-action@v1
+        id: buildozer
         with:
-          python-version: '3.11'
-
-      - name: تثبيت الحزم المطلوبة لـ Buildozer
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y git zip unzip openjdk-17-jdk autoconf libtool pkg-config \
-            zlib1g-dev libncurses-dev libncursesw5-dev cmake libffi-dev libssl-dev
-          pip install --upgrade buildozer cython
-
-      - name: بناء APK
-        run: |
-          yes | buildozer -v android debug
+          command: buildozer android debug
+          buildozer_version: stable
 
       - name: رفع ملف APK كمخرج (Artifact)
         uses: actions/upload-artifact@v4
         with:
           name: football-app-apk
-          path: bin/*.apk
+          path: ${{ steps.buildozer.outputs.filename }}
