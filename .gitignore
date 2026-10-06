@@ -32,3 +32,13 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# --- bermuda-video (heavy media kept out of git) ---
+bermuda-video/images/
+bermuda-video/audio/
+bermuda-video/output/
+bermuda-video/build/__pycache__/
+bermuda-video/build/*
+!bermuda-video/build/*.py
+!bermuda-video/build/
+!bermuda-video/build/*.py
